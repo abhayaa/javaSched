@@ -9,7 +9,8 @@ public class test {
 		
 		e.setName("Max");
 		e.setPhone("333-333-3333");
-		e.setAvail("Monday", 4, "AM", 8, "AM");
+		e.setAvail("Monday", 4, "AM", 4, "AM");
+		e.setAvail("Saturday", 9 ,"PM", 9, "AM");
 		
 		
 		f.setName("John");
@@ -21,6 +22,11 @@ public class test {
 		System.out.println("Phone: " + e.getPhone());
 		System.out.println("Monday: " + e.getAvail("Monday"));
 		System.out.println("Tuesday: " +e.getAvail("Tuesday"));
+		System.out.println("Wednesday: " +e.getAvail("Wednesday"));
+		System.out.println("Thursday: " +e.getAvail("Thursday"));
+		System.out.println("Friday: " +e.getAvail("Friday"));
+		System.out.println("Saturday: " +e.getAvail("Saturday"));
+		System.out.println("Sunday: " +e.getAvail("Sunday"));
 		
 		System.out.println();
 		
