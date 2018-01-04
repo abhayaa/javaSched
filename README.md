@@ -6,6 +6,7 @@ As of now the employee class holds the name and number of each employee, and the
 
 
 Problems (and somewhat of a checklist): 
+
 1. (1-1-18)The key value map corresponds to the time ( ie. 4 am and 4 pm, 4==4) therefore replacing the value for 4 regardless of am/pm, ultimately causes an out of bounds exception (Solved, 1-2-18)
 
 2.(1-3-18) A time class could be a possible solution to a lot of the confusing problems at the moment. Might/might not implement for now, but could see it as being useful for scaling up the application. Not in the forseeable future.
