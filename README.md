@@ -14,4 +14,4 @@ Simple java scheduler to make scheduling easier for small businesses
 
 - #5 (1-4-18) There exist certain functions that have no real purpose as of now, so the data type that they return hasn't been thought about thoroughly.  As the program is built into something more functional, the functions might have to change to reflect the need. 
 
--#6 (1-4-18) Would probably(definitely) more useful to write J-Unit tests. 
+- #6 (1-4-18) Would probably(definitely) more useful to write J-Unit tests. 
