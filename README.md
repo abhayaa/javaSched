@@ -1,9 +1,6 @@
 # javaSched
-Simple java scheduler to make scheduling easier 
-NOTE: Program building in progress, INCOMPLETE
-
-As of now the employee class holds the name and number of each employee, and the availability.  There are two maps for availbility in order to account for hours with the same AM/PM values.  AM/PM values are used as keys in the availability maps in order to avoid problem (see below, 1-1-18). 
-
+Simple java scheduler to make scheduling easier for small businesses 
+**NOTE: Program is in progress and in incomplete**
 
 **Problems (and somewhat of a checklist/thoughts on improvements that could be made), solved problems are marked with date:**
 - #1(1-1-18)The key value map corresponds to the time ( ie. 4 am and 4 pm, 4==4) therefore replacing the value for 4 regardless of am/pm, ultimately causes an out of bounds exception **(Solved, 1-2-18)**
