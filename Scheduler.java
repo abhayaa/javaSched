@@ -10,6 +10,8 @@ import java.util.Map;
 public class Scheduler extends Employee {
 
 	// not sure which one to use yet
+	// with the check avail function we can use a list, much easier
+
 	ArrayList<Employee> empList = new ArrayList<Employee>();
 	Map<Employee, String> empMap = new HashMap<>();
 
@@ -20,14 +22,100 @@ public class Scheduler extends Employee {
 	Map<Integer, ArrayList<Employee>> wrkMap = new HashMap<>();
 
 	// get employees that are available between given hours
-	Employee getEmps(int from, int to) {
+	ArrayList<Employee> getEmps(int from, int to, String day, String f, String t) {
+		ArrayList<Employee> av = new ArrayList<>();
+		for (int i = 0; i < empList.size(); i++) {
+			if (checkAvail(empList.get(i), from, f, to, t, day) == true) {
+				av.add(empList.get(i));
+			}
+		}
+		return av;
+	}
 
-		return null;
+	// boolean function to check if specific employee is available
+	// at a certain time
+	protected boolean checkAvail(Employee e, int from, String f, int to, String t, String day) {
+		if (f.equals(t)) {
+			if (!e.availSame.containsKey(day)) {
+				return false;
+			} else if (e.availSame.containsKey(day)) {
+				if (e.availSame.get(day).containsKey(f)) {
+					int fr = e.availSame.get(day).get(f).get(0);
+					int tro = e.availSame.get(day).get(f).get(1);
+
+					if ((from == fr) && (to == tro)) {
+						return true;
+					}
+				}
+			} else if (e.avail.containsKey(day)) {
+				int fr = e.avail.get(day).get(f);
+				int tro = e.avail.get(day).get(to);
+
+				if ((to == tro) && (from == fr)) {
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 
 	// assign employee to given hours
 	// make sure to check for unavailable
-	void assignEmp(Employee e, int from, int to) {
+	void assignEmp(Employee e, int from, String f, int to, String t, String day) {
+		// check if the employee is available
+		// if not, possible error message, nothing for now
+		if (checkAvail(e, from, f, to, t, day) == true) {
+			// if both f and t are the same, (AM to AM or PM to PM)
+			if (f.equals(t)) {
+				if (f.equals("AM")) {
+					for (int i = from; i < to + 1; i++) {
+						if (wrkMap.containsKey(i)) {
+							wrkMap.get(i).add(e);
+						} else {
+							ArrayList<Employee> emps = new ArrayList<>();
+							emps.add(e);
+							wrkMap.put(i, emps);
+						}
+					}
+				} else if (f.equals("PM")) {
+					for (int i = from + 12; i < to + 12 + 1; i++) {
+						if (wrkMap.containsKey(i)) {
+							wrkMap.get(i).add(e);
+						} else {
+							ArrayList<Employee> emps = new ArrayList<>();
+							emps.add(e);
+							wrkMap.put(i, emps);
+						}
+					}
+				}
+			} else {
+				// if times go between am/pm
+				if (f.equals("AM") && (t.equals("PM"))) {
+					for (int i = from; i < to + 12 + 2; i++) {
+						if (wrkMap.containsKey(i)) {
+							wrkMap.get(i).add(e);
+						} else {
+							ArrayList<Employee> emps = new ArrayList<>();
+							emps.add(e);
+							wrkMap.put(i, emps);
+						}
+					}
+				} else if (f.equals("PM") && (t.equals("AM"))) {
+					for (int i = from + 12; i < to; i--) {
+						if (wrkMap.containsKey(i)) {
+							wrkMap.get(i).add(e);
+						} else {
+							ArrayList<Employee> emps = new ArrayList<>();
+							emps.add(e);
+							wrkMap.put(i, emps);
+						}
+					}
+				}
+			}
+			// employee not available
+		} else {
+
+		}
 
 	}
 
@@ -82,10 +170,48 @@ public class Scheduler extends Employee {
 			// if the given times are not both am/pm, and are one and the other
 			// eg. 9 am to 5 pm
 		} else {
-			
-		}
+			if (f.equals("AM") && t.equals("PM")) {
+				ArrayList<ArrayList<Employee>> wrk = new ArrayList<>();
 
+				for (int i = from; i < to + 12 + 1; i++) {
+					wrk.add(wrkMap.get(i));
+				}
+
+				ArrayList<String> names = new ArrayList<>();
+
+				for (int j = from; j < to + 12 + 1; j++) {
+					for (int k = 0; k < wrk.get(j).size(); k++) {
+						if (!names.contains(wrk.get(j).get(k).getName())) {
+							names.add(wrk.get(j).get(k).getName());
+						}
+					}
+				}
+				String nameStr = String.join(", ", names);
+				return "The people working rom" + from + f + " to " + to + t + " are " + nameStr;
+			} else {
+				// this would only be relevant in night shift companies
+				// going from pm >> am
+				if (f.equals("PM") && t.equals("AM")) {
+					ArrayList<ArrayList<Employee>> wrk = new ArrayList<>();
+
+					for (int i = to + 12 + 1; i < from; i--) {
+						wrk.add(wrkMap.get(i));
+					}
+
+					ArrayList<String> names = new ArrayList<>();
+
+					for (int j = from; j < to + 12 + 1; j++) {
+						for (int k = 0; k < wrk.get(j).size(); k++) {
+							if (!names.contains(wrk.get(j).get(k).getName())) {
+								names.add(wrk.get(j).get(k).getName());
+							}
+						}
+					}
+					String nameStr = String.join(", ", names);
+					return "The people working rom" + from + f + " to " + to + t + " are " + nameStr;
+				}
+			}
+		}
 		return null;
 	}
-
 }
